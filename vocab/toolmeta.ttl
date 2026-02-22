@@ -13,10 +13,10 @@
 tool: a owl:Ontology ;
   rdfs:label "ToolMeta Vocabulary"@en ;
   rdfs:comment "A minimal vocabulary for describing executable tool artefacts and their tool interfaces (inputs/outputs) in RDF/JSON-LD graphs."@en ;
-  owl:versionIRI <https://eosc-data-commons.github.io/toolmeta-vocab/toolmeta/0.2/toolmeta.ttl> ;
-  owl:versionInfo "0.2.0" ;
+  owl:versionIRI <https://eosc-data-commons.github.io/toolmeta-vocab/toolmeta/toolmeta.ttl> ;
+  owl:versionInfo "0.1.0alpha" ;
   dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
-  dcterms:creator "ToolMeta project"@en ;
+  dcterms:creator "EOSC Data Commons project"@en ;
   dcterms:issued "2026-02-22"^^xsd:date .
 
 ################################################################################
@@ -46,14 +46,6 @@ tool:Notebook a rdfs:Class ;
 tool:Container a rdfs:Class ;
   rdfs:subClassOf schema:SoftwareApplication ;
   rdfs:label "Container"@en .
-
-tool:NextflowWorkflow a rdfs:Class ;
-  rdfs:subClassOf schema:SoftwareApplication ;
-  rdfs:label "Nextflow Workflow"@en .
-
-tool:CLIApplication a rdfs:Class ;
-  rdfs:subClassOf schema:SoftwareApplication ;
-  rdfs:label "CLI Application"@en .
 
 tool:WebAPI a rdfs:Class ;
   rdfs:subClassOf schema:SoftwareApplication ;

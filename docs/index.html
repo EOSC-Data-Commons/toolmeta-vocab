@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToolMeta Vocabulary</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #222;
+      background: #f8f9fa;
+    }
+
+    header {
+      background: #1a3c5e;
+      color: #fff;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    header h1 { font-size: 2.2rem; margin-bottom: 0.4rem; }
+    header p  { font-size: 1.05rem; opacity: .85; max-width: 640px; margin: 0 auto; }
+
+    main { max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem 3rem; }
+
+    section { margin-bottom: 2.5rem; }
+    h2 {
+      font-size: 1.4rem;
+      color: #1a3c5e;
+      border-bottom: 2px solid #d0dce8;
+      padding-bottom: .35rem;
+      margin-bottom: 1rem;
+    }
+
+    p { margin-bottom: .8rem; }
+
+    .vocab-card {
+      background: #fff;
+      border: 1px solid #d0dce8;
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .vocab-card h3 { font-size: 1.1rem; margin-bottom: .4rem; }
+    .vocab-card p  { margin: 0 0 .6rem; color: #555; font-size: .95rem; }
+    .vocab-card .links a {
+      display: inline-block;
+      margin-right: .6rem;
+      padding: .3rem .75rem;
+      border-radius: 4px;
+      font-size: .85rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .btn-ttl   { background: #e8f0f8; color: #1a3c5e; border: 1px solid #b0c8e0; }
+    .btn-ttl:hover { background: #d0e4f4; }
+
+    code {
+      background: #eef2f7;
+      border-radius: 3px;
+      padding: .15rem .45rem;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: .9em;
+    }
+
+    pre {
+      background: #1e2a38;
+      color: #c9d9ea;
+      padding: 1.2rem 1.5rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: .88rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+
+    footer {
+      text-align: center;
+      font-size: .85rem;
+      color: #777;
+      padding: 1.5rem;
+      border-top: 1px solid #d0dce8;
+    }
+    footer a { color: #1a3c5e; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ToolMeta Vocabulary</h1>
+  <p>A vocabulary for describing metadata about computational tools in the EOSC ecosystem.</p>
+</header>
+
+<main>
+
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      The <strong>ToolMeta Vocabulary</strong> provides a set of classes and properties for
+      describing computational tools, their versions, and containerised deployments within the
+      <a href="https://eosc.eu/">European Open Science Cloud (EOSC)</a> ecosystem.
+    </p>
+    <p>
+      The vocabulary is published as a Turtle (<code>.ttl</code>) file and is freely reusable
+      under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>.
+    </p>
+  </section>
+
+  <section id="vocabularies">
+    <h2>Vocabularies</h2>
+
+    <div class="vocab-card">
+      <h3>ToolMeta Core</h3>
+      <p>
+        Core vocabulary for describing computational tools, their versioned releases, and
+        container images. Namespace:
+        <code>https://eosc-data-commons.github.io/toolmeta-vocab/</code>
+      </p>
+      <div class="links">
+        <a class="btn-ttl" href="vocab/toolmeta.ttl">Download Turtle (.ttl)</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="usage">
+    <h2>Usage</h2>
+    <p>Reference the vocabulary in your Turtle file by declaring the prefix:</p>
+    <pre><code>@prefix toolmeta: &lt;https://eosc-data-commons.github.io/toolmeta-vocab/&gt; .</code></pre>
+    <p>Example description of a tool:</p>
+    <pre><code>@prefix toolmeta: &lt;https://eosc-data-commons.github.io/toolmeta-vocab/&gt; .
+@prefix dcterms:  &lt;http://purl.org/dc/terms/&gt; .
+
+&lt;https://example.org/tools/mytool&gt; a toolmeta:Tool ;
+    dcterms:title   "My Research Tool" ;
+    dcterms:creator &lt;https://orcid.org/0000-0000-0000-0000&gt; ;
+    toolmeta:hasVersion &lt;https://example.org/tools/mytool/1.0.0&gt; .
+
+&lt;https://example.org/tools/mytool/1.0.0&gt; a toolmeta:ToolVersion ;
+    toolmeta:versionNumber "1.0.0" ;
+    toolmeta:sourceRepository &lt;https://github.com/myorg/mytool&gt; .</code></pre>
+  </section>
+
+  <section id="contribute">
+    <h2>Contributing</h2>
+    <p>
+      Contributions are welcome via the
+      <a href="https://github.com/EOSC-Data-Commons/toolmeta-vocab">GitHub repository</a>.
+      Please open an issue or pull request to suggest additions or corrections.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    &copy; EOSC Data Commons &mdash;
+    <a href="https://github.com/EOSC-Data-Commons/toolmeta-vocab">GitHub</a> &mdash;
+    Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>
+  </p>
+</footer>
+
+</body>
+</html>

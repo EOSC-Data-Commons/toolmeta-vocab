@@ -1,0 +1,85 @@
+@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:     <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann:     <http://purl.org/vocab/vann/> .
+@prefix :         <https://eosc-data-commons.github.io/toolmeta-vocab/> .
+
+# ---------------------------------------------------------------------------
+# Ontology declaration
+# ---------------------------------------------------------------------------
+
+: a owl:Ontology ;
+    rdfs:label "ToolMeta Vocabulary"@en ;
+    dcterms:title "ToolMeta Vocabulary"@en ;
+    dcterms:description "A vocabulary for describing metadata about computational tools in the EOSC ecosystem."@en ;
+    dcterms:created "2024-01-01"^^xsd:date ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
+    vann:preferredNamespacePrefix "toolmeta" ;
+    vann:preferredNamespaceUri "https://eosc-data-commons.github.io/toolmeta-vocab/" ;
+    owl:versionInfo "0.1.0" .
+
+# ---------------------------------------------------------------------------
+# Classes
+# ---------------------------------------------------------------------------
+
+:Tool a owl:Class ;
+    rdfs:label "Tool"@en ;
+    rdfs:comment "A computational tool or software used in research workflows."@en ;
+    skos:example "A bioinformatics pipeline, a data processing script, or a machine-learning framework."@en .
+
+:ToolVersion a owl:Class ;
+    rdfs:label "Tool Version"@en ;
+    rdfs:comment "A specific released version of a computational tool."@en ;
+    rdfs:subClassOf :Tool .
+
+:ToolContainer a owl:Class ;
+    rdfs:label "Tool Container"@en ;
+    rdfs:comment "A containerised form of a tool version, such as a Docker or Singularity image."@en ;
+    rdfs:subClassOf :ToolVersion .
+
+# ---------------------------------------------------------------------------
+# Object Properties
+# ---------------------------------------------------------------------------
+
+:hasVersion a owl:ObjectProperty ;
+    rdfs:label "has version"@en ;
+    rdfs:comment "Links a tool to one of its versioned releases."@en ;
+    rdfs:domain :Tool ;
+    rdfs:range :ToolVersion .
+
+:hasContainer a owl:ObjectProperty ;
+    rdfs:label "has container"@en ;
+    rdfs:comment "Links a tool version to a container image that packages it."@en ;
+    rdfs:domain :ToolVersion ;
+    rdfs:range :ToolContainer .
+
+:sourceRepository a owl:DatatypeProperty ;
+    rdfs:label "source repository"@en ;
+    rdfs:comment "The URI of the source-code repository for the tool."@en ;
+    rdfs:domain :Tool ;
+    rdfs:range xsd:anyURI .
+
+# ---------------------------------------------------------------------------
+# Datatype Properties
+# ---------------------------------------------------------------------------
+
+:versionNumber a owl:DatatypeProperty ;
+    rdfs:label "version number"@en ;
+    rdfs:comment "A string identifying the version of the tool (e.g., '1.2.3' or 'v2.0.0-rc1')."@en ;
+    rdfs:domain :ToolVersion ;
+    rdfs:range xsd:string .
+
+:containerImage a owl:DatatypeProperty ;
+    rdfs:label "container image"@en ;
+    rdfs:comment "The registry URI or name of the container image (e.g., 'docker.io/myorg/mytool:1.0')."@en ;
+    rdfs:domain :ToolContainer ;
+    rdfs:range xsd:string .
+
+:containerRuntime a owl:DatatypeProperty ;
+    rdfs:label "container runtime"@en ;
+    rdfs:comment "The container runtime required to execute this container (e.g., 'docker', 'singularity')."@en ;
+    rdfs:domain :ToolContainer ;
+    rdfs:range xsd:string .

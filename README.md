@@ -2,7 +2,7 @@
 
 A project to host Turtle (`.ttl`) RDF vocabularies for describing tools in the
 [European Open Science Cloud (EOSC)](https://eosc.eu/horizon-europe-projects/eosc-data-commons) ecosystem, published via
-[GitHub Pages](https://eosc-data-commons.github.io/toolmeta-vocab/).
+[GitHub Pages](https://eosc-data-commons.github.io/toolmeta-vocab/docs).
 
 ## Vocabularies
 

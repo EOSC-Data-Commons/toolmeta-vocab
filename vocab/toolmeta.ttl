@@ -1,85 +1,181 @@
-@prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl:      <http://www.w3.org/2002/07/owl#> .
-@prefix dcterms:  <http://purl.org/dc/terms/> .
-@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
-@prefix skos:     <http://www.w3.org/2004/02/skos/core#> .
-@prefix vann:     <http://purl.org/vocab/vann/> .
-@prefix :         <https://eosc-data-commons.github.io/toolmeta-vocab/> .
+@prefix tool:   <https://eosc-data-commons.github.io/toolmeta-vocab/toolmeta#> .
+@prefix schema: <https://schema.org/> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms:<http://purl.org/dc/terms/> .
 
-# ---------------------------------------------------------------------------
-# Ontology declaration
-# ---------------------------------------------------------------------------
+################################################################################
+# Ontology header
+################################################################################
 
-: a owl:Ontology ;
-    rdfs:label "ToolMeta Vocabulary"@en ;
-    dcterms:title "ToolMeta Vocabulary"@en ;
-    dcterms:description "A vocabulary for describing metadata about computational tools in the EOSC ecosystem."@en ;
-    dcterms:created "2024-01-01"^^xsd:date ;
-    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
-    vann:preferredNamespacePrefix "toolmeta" ;
-    vann:preferredNamespaceUri "https://eosc-data-commons.github.io/toolmeta-vocab/" ;
-    owl:versionInfo "0.1.0" .
+tool: a owl:Ontology ;
+  rdfs:label "ToolMeta Vocabulary"@en ;
+  rdfs:comment "A minimal vocabulary for describing executable tool artefacts and their tool interfaces (inputs/outputs) in RDF/JSON-LD graphs."@en ;
+  owl:versionIRI <https://eosc-data-commons.github.io/toolmeta-vocab/toolmeta/0.2/toolmeta.ttl> ;
+  owl:versionInfo "0.2.0" ;
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+  dcterms:creator "ToolMeta project"@en ;
+  dcterms:issued "2026-02-22"^^xsd:date .
 
-# ---------------------------------------------------------------------------
-# Classes
-# ---------------------------------------------------------------------------
+################################################################################
+# Core class: Tool Interface
+################################################################################
 
-:Tool a owl:Class ;
-    rdfs:label "Tool"@en ;
-    rdfs:comment "A computational tool or software used in research workflows."@en ;
-    skos:example "A bioinformatics pipeline, a data processing script, or a machine-learning framework."@en .
+tool:Interface a rdfs:Class ;
+  rdfs:label "Tool Interface"@en ;
+  rdfs:comment "Explicit description of a tool's operational interface, including its inputs and outputs."@en .
 
-:ToolVersion a owl:Class ;
-    rdfs:label "Tool Version"@en ;
-    rdfs:comment "A specific released version of a computational tool."@en ;
-    rdfs:subClassOf :Tool .
+################################################################################
+# Archetype classes (attach via @type on schema:SoftwareApplication)
+################################################################################
 
-:ToolContainer a owl:Class ;
-    rdfs:label "Tool Container"@en ;
-    rdfs:comment "A containerised form of a tool version, such as a Docker or Singularity image."@en ;
-    rdfs:subClassOf :ToolVersion .
+tool:GalaxyWorkflow a rdfs:Class ;
+  rdfs:subClassOf schema:SoftwareApplication ;
+  rdfs:label "Galaxy Workflow"@en .
 
-# ---------------------------------------------------------------------------
-# Object Properties
-# ---------------------------------------------------------------------------
+tool:GalaxyTool a rdfs:Class ;
+  rdfs:subClassOf schema:SoftwareApplication ;
+  rdfs:label "Galaxy Tool"@en .
 
-:hasVersion a owl:ObjectProperty ;
-    rdfs:label "has version"@en ;
-    rdfs:comment "Links a tool to one of its versioned releases."@en ;
-    rdfs:domain :Tool ;
-    rdfs:range :ToolVersion .
+tool:Notebook a rdfs:Class ;
+  rdfs:subClassOf schema:SoftwareApplication ;
+  rdfs:label "Notebook"@en .
 
-:hasContainer a owl:ObjectProperty ;
-    rdfs:label "has container"@en ;
-    rdfs:comment "Links a tool version to a container image that packages it."@en ;
-    rdfs:domain :ToolVersion ;
-    rdfs:range :ToolContainer .
+tool:Container a rdfs:Class ;
+  rdfs:subClassOf schema:SoftwareApplication ;
+  rdfs:label "Container"@en .
 
-:sourceRepository a owl:DatatypeProperty ;
-    rdfs:label "source repository"@en ;
-    rdfs:comment "The URI of the source-code repository for the tool."@en ;
-    rdfs:domain :Tool ;
-    rdfs:range xsd:anyURI .
+tool:NextflowWorkflow a rdfs:Class ;
+  rdfs:subClassOf schema:SoftwareApplication ;
+  rdfs:label "Nextflow Workflow"@en .
 
-# ---------------------------------------------------------------------------
-# Datatype Properties
-# ---------------------------------------------------------------------------
+tool:CLIApplication a rdfs:Class ;
+  rdfs:subClassOf schema:SoftwareApplication ;
+  rdfs:label "CLI Application"@en .
 
-:versionNumber a owl:DatatypeProperty ;
-    rdfs:label "version number"@en ;
-    rdfs:comment "A string identifying the version of the tool (e.g., '1.2.3' or 'v2.0.0-rc1')."@en ;
-    rdfs:domain :ToolVersion ;
-    rdfs:range xsd:string .
+tool:WebAPI a rdfs:Class ;
+  rdfs:subClassOf schema:SoftwareApplication ;
+  rdfs:label "Web API"@en .
 
-:containerImage a owl:DatatypeProperty ;
-    rdfs:label "container image"@en ;
-    rdfs:comment "The registry URI or name of the container image (e.g., 'docker.io/myorg/mytool:1.0')."@en ;
-    rdfs:domain :ToolContainer ;
-    rdfs:range xsd:string .
+################################################################################
+# Artefact ↔ Interface linking
+################################################################################
 
-:containerRuntime a owl:DatatypeProperty ;
-    rdfs:label "container runtime"@en ;
-    rdfs:comment "The container runtime required to execute this container (e.g., 'docker', 'singularity')."@en ;
-    rdfs:domain :ToolContainer ;
-    rdfs:range xsd:string .
+tool:hasInterface a rdf:Property ;
+  rdfs:label "has interface"@en ;
+  rdfs:domain schema:SoftwareApplication ;
+  rdfs:range tool:Interface .
+
+tool:interfaceVersion a rdf:Property ;
+  rdfs:label "interface version"@en ;
+  rdfs:domain tool:Interface ;
+  rdfs:range xsd:string .
+
+################################################################################
+# Interface I/O properties
+################################################################################
+
+tool:hasInput a rdf:Property ;
+  rdfs:label "has input"@en ;
+  rdfs:domain tool:Interface ;
+  rdfs:range schema:FormalParameter .
+
+tool:hasOutput a rdf:Property ;
+  rdfs:label "has output"@en ;
+  rdfs:domain tool:Interface ;
+  rdfs:range schema:FormalParameter .
+
+################################################################################
+# Input Type Classification (class-based, no strings)
+################################################################################
+
+tool:InputType a rdfs:Class ;
+  rdfs:label "Input Type"@en ;
+  rdfs:comment "Superclass for semantic classifications of tool input and output parameters."@en .
+
+tool:inputType a rdf:Property ;
+  rdfs:label "input type"@en ;
+  rdfs:domain schema:FormalParameter ;
+  rdfs:range tool:InputType .
+
+################################################################################
+# Core Input Type Hierarchy
+################################################################################
+
+tool:FileType a rdfs:Class ;
+  rdfs:subClassOf tool:InputType ;
+  rdfs:label "File Type"@en .
+
+tool:FolderType a rdfs:Class ;
+  rdfs:subClassOf tool:InputType ;
+  rdfs:label "Folder Type"@en .
+
+tool:IntegerType a rdfs:Class ;
+  rdfs:subClassOf tool:InputType ;
+  rdfs:label "Integer Type"@en .
+
+tool:StringType a rdfs:Class ;
+  rdfs:subClassOf tool:InputType ;
+  rdfs:label "String Type"@en .
+
+tool:BooleanType a rdfs:Class ;
+  rdfs:subClassOf tool:InputType ;
+  rdfs:label "Boolean Type"@en .
+
+tool:DateTimeType a rdfs:Class ;
+  rdfs:subClassOf tool:InputType ;
+  rdfs:label "DateTime Type"@en .
+
+################################################################################
+# Optional parameter semantics
+################################################################################
+
+tool:role a rdf:Property ;
+  rdfs:label "role"@en ;
+  rdfs:comment "Semantic role of a parameter in the interface (e.g., primary, configuration, reference)."@en ;
+  rdfs:domain schema:FormalParameter ;
+  rdfs:range xsd:string .
+
+################################################################################
+# Optional file-related constraints
+################################################################################
+
+tool:fileExtension a rdf:Property ;
+  rdfs:label "file extension"@en ;
+  rdfs:comment "Expected file extension for a file parameter."@en ;
+  rdfs:domain schema:FormalParameter ;
+  rdfs:range xsd:string .
+
+################################################################################
+# Embedded schema constraints
+################################################################################
+
+tool:schemaType a rdf:Property ;
+  rdfs:domain schema:FormalParameter ;
+  rdfs:range xsd:string .
+
+tool:schemaVersion a rdf:Property ;
+  rdfs:domain schema:FormalParameter ;
+  rdfs:range xsd:string .
+
+tool:schema a rdf:Property ;
+  rdfs:domain schema:FormalParameter .
+
+################################################################################
+# Harvested metadata tracking
+################################################################################
+
+tool:rawMetadata a rdf:Property ;
+  rdfs:label "raw metadata"@en ;
+  rdfs:domain schema:SoftwareApplication ;
+  rdfs:range rdf:JSON .
+
+tool:metadataType a rdf:Property ;
+  rdfs:domain schema:SoftwareApplication ;
+  rdfs:range xsd:string .
+
+tool:metadataVersion a rdf:Property ;
+  rdfs:domain schema:SoftwareApplication ;
+  rdfs:range xsd:string .

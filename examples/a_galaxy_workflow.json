@@ -1,0 +1,66 @@
+{
+  "@context": {
+    "@base": "https://example.org/tools/rnaseq-aligner",
+    "schema": "https://schema.org/",
+    "tool": "https://eosc-data-commons.github.io/toolmeta-vocab/toolmeta#"
+  },
+  "@graph": [
+
+    {
+      "@id": "",
+      "@type": [
+        "schema:SoftwareApplication",
+        "tool:GalaxyWorkflow"
+      ],
+      "schema:name": "RNA-Seq Alignment Workflow",
+      "schema:description": "Galaxy workflow performing read alignment and sorting.",
+      "schema:softwareVersion": "1.0.0",
+      "schema:url": "https://example.org/workflows/rnaseq-aligner.ga",
+      "tool:hasInterface": { "@id": "#interface" }
+    },
+
+    {
+      "@id": "#interface",
+      "@type": "tool:Interface",
+      "tool:interfaceVersion": "1.0",
+      "tool:hasInput": [
+        { "@id": "#reads" },
+        { "@id": "#threads" }
+      ],
+      "tool:hasOutput": [
+        { "@id": "#bam" }
+      ]
+    },
+
+    {
+      "@id": "#reads",
+      "@type": "schema:FormalParameter",
+      "schema:name": "reads",
+      "schema:description": "Input FASTQ reads",
+      "tool:inputType": { "@id": "tool:FileType" },
+      "schema:encodingFormat": "text/x-fastq",
+      "tool:fileExtension": [".fastq", ".fq"],
+      "tool:role": "primary"
+    },
+
+    {
+      "@id": "#threads",
+      "@type": "schema:FormalParameter",
+      "schema:name": "threads",
+      "schema:description": "Number of CPU threads",
+      "tool:inputType": { "@id": "tool:IntegerType" },
+      "tool:role": "configuration"
+    },
+
+    {
+      "@id": "#bam",
+      "@type": "schema:FormalParameter",
+      "schema:name": "aligned_bam",
+      "schema:description": "Sorted alignment output",
+      "tool:inputType": { "@id": "tool:FileType" },
+      "schema:encodingFormat": "application/bam",
+      "tool:fileExtension": ".bam"
+    }
+
+  ]
+}

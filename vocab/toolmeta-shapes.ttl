@@ -1,0 +1,77 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix schema: <https://schema.org/> .
+@prefix tool: <https://eosc-data-commons.github.io/toolmeta-vocab/toolmeta#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+################################################################################
+# Tool Shape
+################################################################################
+
+tool:ToolShape
+  a sh:NodeShape ;
+  sh:targetClass schema:SoftwareApplication ;
+
+  sh:property [
+    sh:path tool:hasInterface ;
+    sh:class tool:Interface ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] .
+
+################################################################################
+# Interface Shape
+################################################################################
+
+tool:InterfaceShape
+  a sh:NodeShape ;
+  sh:targetClass tool:Interface ;
+
+  sh:property [
+    sh:path tool:hasInput ;
+    sh:class schema:FormalParameter ;
+    sh:minCount 1 ;
+  ] ;
+
+  sh:property [
+    sh:path tool:hasOutput ;
+    sh:class schema:FormalParameter ;
+    sh:minCount 1 ;
+  ] .
+
+################################################################################
+# Parameter Shape
+################################################################################
+
+tool:ParameterShape
+  a sh:NodeShape ;
+  sh:targetClass schema:FormalParameter ;
+
+  sh:property [
+    sh:path tool:inputType ;
+    sh:class tool:InputType ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] .
+
+################################################################################
+# File Parameter Constraint (optional extension rule)
+################################################################################
+
+tool:FileExtensionShape
+  a sh:NodeShape ;
+  sh:targetClass schema:FormalParameter ;
+
+  sh:rule [
+    a sh:SPARQLRule ;
+    sh:construct """
+      CONSTRUCT {
+        ?this tool:_needsFileExtension true .
+      }
+      WHERE {
+        ?this tool:inputType ?t .
+        ?t rdfs:subClassOf* tool:FileType .
+      }
+    """ ;
+  ] .
+

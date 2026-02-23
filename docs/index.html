@@ -1,9 +1,6 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToolMeta Vocabulary</title>
     <style>
       *,
       *::before,
@@ -131,6 +128,12 @@
         color: #1a3c5e;
       }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
   </head>
   <body>
     <header>
@@ -161,7 +164,6 @@
           >.
         </p>
       </section>
-
       <section id="vocabularies">
         <h2>Vocabularies</h2>
 
@@ -177,35 +179,37 @@
             <a class="btn-ttl" href="../vocab/toolmeta.ttl"
               >Download Vocabulary Turtle (.ttl)</a
             >
-          </div>
-          <div class="links">
             <a class="btn-ttl" href="../vocab/toolmeta-shapes.ttl"
               >Download SHACL Turtle (.ttl)</a
             >
           </div>
         </div>
       </section>
+      <section>
+        <h2>Example</h2>
+        <div class="vocab-card">
+          <h3>Example JSON-LD Description of a Galaxy Workflow as a Tool</h3>
+          <p>
+            This example demonstrates how to use the ToolMeta Vocabulary to
+            describe a Galaxy workflow, including its input and output
+            interfaces, in JSON-LD syntax.
+          </p>
+          <pre><code id="json-example" class="language-json"></code></pre>
+        </div>
+      </section>
 
-      <!--       <section id="usage"> -->
-      <!--         <h2>Usage</h2> -->
-      <!--         <p> -->
-      <!--           Reference the vocabulary in your Turtle file by declaring the prefix: -->
-      <!--         </p> -->
-      <!--         <pre><code>@prefix toolmeta: &lt;https://eosc-data-commons.github.io/toolmeta-vocab/&gt; .</code></pre> -->
-      <!--         <p>Example description of a tool:</p> -->
-      <!--         <pre><code>@prefix toolmeta: &lt;https://eosc-data-commons.github.io/toolmeta-vocab/&gt; . -->
-      <!-- @prefix dcterms:  &lt;http://purl.org/dc/terms/&gt; . -->
-      <!---->
-      <!-- &lt;https://example.org/tools/mytool&gt; a toolmeta:Tool ; -->
-      <!--     dcterms:title   "My Research Tool" ; -->
-      <!--     dcterms:creator &lt;https://orcid.org/0000-0000-0000-0000&gt; ; -->
-      <!--     toolmeta:hasVersion &lt;https://example.org/tools/mytool/1.0.0&gt; . -->
-      <!---->
-      <!-- &lt;https://example.org/tools/mytool/1.0.0&gt; a toolmeta:ToolVersion ; -->
-      <!--     toolmeta:versionNumber "1.0.0" ; -->
-      <!--     toolmeta:sourceRepository &lt;https://github.com/myorg/mytool&gt; .</code></pre> -->
-      <!--       </section> -->
-      <!---->
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const target = document.getElementById("json-example");
+
+          fetch("../examples/a_galaxy_workflow.json")
+            .then((response) => response.text())
+            .then((data) => {
+              target.textContent = data;
+              Prism.highlightElement(target);
+            });
+        });
+      </script>
       <section id="contribute">
         <h2>Contributing</h2>
         <p>
